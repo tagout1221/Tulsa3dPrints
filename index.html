@@ -73,21 +73,25 @@
       justify-content: space-between;
     }
 
-    /* Logo wordmark */
-    .logo {
-      font-family: 'Barlow Semi Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 24px;
-      letter-spacing: -0.02em;
-      text-decoration: none;
+    /* Logo image */
+    .logo-img-link {
       display: flex;
       align-items: center;
-      line-height: 1;
-      position: relative;
+      text-decoration: none;
+      flex-shrink: 0;
     }
-    .logo-dark  { color: var(--slate); }
-    .logo-three { color: #4A5468; }
-    .logo-teal  { color: var(--teal); }
+    .logo-img {
+      height: 38px;
+      width: auto;
+      border-radius: 6px;
+      display: block;
+      box-shadow: 0 2px 12px rgba(43,191,191,0.18);
+    }
+    .logo-img-footer {
+      height: 46px;
+      margin-bottom: 18px;
+    }
+    /* Legacy (unused, kept for safety) */
     .logo-nozzle {
       display: inline-block;
       width: 6px;
@@ -755,8 +759,8 @@
   <!-- ═══════════════ NAV ═══════════════ -->
   <nav id="main-nav">
     <div class="nav-inner">
-      <a href="#" class="logo" aria-label="Tulsa3dPrints home">
-        <span class="logo-dark">Tulsa</span><span class="logo-three">3</span><span class="logo-teal">dPrints</span>
+      <a href="#" class="logo-img-link" aria-label="Tulsa3dPrints home">
+        <img src="logo.png" alt="Tulsa3dPrints" class="logo-img">
       </a>
       <div class="nav-links">
         <a href="#services">Services</a>
@@ -1196,8 +1200,8 @@
       <div class="foot-top">
 
         <div class="foot-brand">
-          <a href="#" class="logo" style="font-size:22px; text-decoration:none;">
-            <span class="logo-dark">Tulsa</span><span class="logo-three">3</span><span class="logo-teal">dPrints</span>
+          <a href="#" class="logo-img-link" style="text-decoration:none;">
+            <img src="logo.png" alt="Tulsa3dPrints" class="logo-img logo-img-footer">
           </a>
           <p>Precision 3D printing services for makers, entrepreneurs, and businesses in Tulsa, Oklahoma and beyond.</p>
           <div class="foot-location">📍 &nbsp;Tulsa, Oklahoma</div>
