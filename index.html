@@ -753,6 +753,132 @@
     .d4 { transition-delay: 0.40s; }
     .d5 { transition-delay: 0.50s; }
     .d6 { transition-delay: 0.60s; }
+
+    /* ── RESPONSIVE ─────────────────────────────────── */
+
+    /* Hamburger button (hidden on desktop) */
+    .mob-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 26px;
+      height: 18px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 201;
+      flex-shrink: 0;
+    }
+    .mob-btn span {
+      display: block;
+      height: 2px;
+      background: var(--teal);
+      border-radius: 2px;
+      transition: opacity 0.2s, transform 0.25s;
+    }
+
+    /* Mobile overlay */
+    #mob-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(9,13,18,0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #mob-nav.open { display: flex; }
+
+    .mob-close {
+      position: absolute;
+      top: 22px;
+      right: 24px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 4px;
+    }
+    .mob-close:hover { color: var(--teal); }
+
+    .mob-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .mob-links a:not(.btn) {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 56px;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      text-decoration: none;
+      line-height: 1.15;
+      transition: color 0.2s;
+    }
+    .mob-links a:not(.btn):hover { color: var(--teal); }
+
+    /* ── Tablet (≤1023px) ── */
+    @media (max-width: 1023px) {
+      .mob-btn { display: flex; }
+      .nav-links { display: none; }
+      .nav-inner { padding: 0 24px; }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding: 80px 32px 60px;
+        gap: 48px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+      }
+      .gal-item.span2 { grid-row: span 1; }
+
+      .testi-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .foot-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── Mobile (≤767px) ── */
+    @media (max-width: 767px) {
+      section { padding: 72px 20px; }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding: 56px 20px 44px;
+        gap: 36px;
+        text-align: center;
+      }
+      .hero-ctas { justify-content: center; }
+      .hero-stats { justify-content: center; flex-wrap: wrap; gap: 24px 32px; }
+
+      .svc-grid { grid-template-columns: 1fr; }
+
+      .proc-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 16px; }
+      .proc-grid::before { display: none; }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .gal-item.span2 { grid-row: span 1; }
+
+      .why-grid { grid-template-columns: 1fr; gap: 24px; }
+
+      .testi-grid { grid-template-columns: 1fr; }
+
+      .foot-top { grid-template-columns: 1fr 1fr; gap: 32px 24px; }
+      .foot-top > *:first-child { grid-column: 1 / -1; }
+    }
   </style>
 </head>
 <body>
@@ -771,8 +897,24 @@
 
         <a href="#cta" class="btn btn-solid" style="margin-left:8px; padding: 9px 20px;">Get a Quote</a>
       </div>
+
+      <button class="mob-btn" id="mob-btn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
+
+  <!-- Mobile full-screen overlay nav -->
+  <div id="mob-nav" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <button class="mob-close" id="mob-close" aria-label="Close menu">&#x2715;</button>
+    <div class="mob-links">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#why">About</a>
+      <a href="#cta" class="btn btn-solid" style="margin-top:24px; font-size:15px; padding:14px 36px;">Get a Quote</a>
+    </div>
+  </div>
 
 
   <!-- ═══════════════ HERO ════════════════ -->
@@ -1296,6 +1438,27 @@
         ? 'rgba(9,13,18,0.97)'
         : 'rgba(9,13,18,0.82)';
     }, { passive: true });
+
+    // Mobile hamburger overlay
+    const mobBtn  = document.getElementById('mob-btn');
+    const mobNav  = document.getElementById('mob-nav');
+    const mobClose = document.getElementById('mob-close');
+
+    function openMobNav() {
+      mobNav.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      mobBtn.setAttribute('aria-expanded', 'true');
+    }
+    function closeMobNav() {
+      mobNav.classList.remove('open');
+      document.body.style.overflow = '';
+      mobBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    mobBtn.addEventListener('click', openMobNav);
+    mobClose.addEventListener('click', closeMobNav);
+    mobNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobNav));
+    mobNav.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobNav(); });
   </script>
 
 </body>
